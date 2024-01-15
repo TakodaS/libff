@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.22)
 
 project (libff)
 # Default to RelWithDebInfo configuration if no configuration is explicitly specified.
@@ -229,7 +229,7 @@ if ("${IS_LIBFF_PARENT}")
      -E echo 'Built target finished'
   )
 
-  add_subdirectory(depends)
+  # add_subdirectory(depends)
   # Add a 'make clang-tidy' target that runs clang-tidy using checks specified in .clang-tidy
   include(clang-tidy.cmake)
 endif()

@@ -121,7 +121,17 @@ install(
 install(
   TARGETS ff DESTINATION lib
 )
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(
+  "${CMAKE_CURRENT_BINARY_DIR}/libff/LibffConfigVersion.cmake"
+  VERSION ${Upstream_VERSION}
+  COMPATIBILITY AnyNewerVersion
+)
 
+export(EXPORT LibffTargets
+  FILE "${CMAKE_CURRENT_BINARY_DIR}/libff/LibffTargets.cmake"
+  NAMESPACE Upstream::
+)
 # Tests
 if ("${IS_LIBFF_PARENT}")
   # Tests for fpn fields.
