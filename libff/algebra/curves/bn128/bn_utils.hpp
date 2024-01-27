@@ -9,15 +9,30 @@
 #define BN_UTILS_HPP_
 #include <vector>
 
-#include "depends/ate-pairing/include/bn.h"
+namespace mie
+{
+    class Fp;
+    // class Vuint;
+}
+namespace bn
+{
+    typedef mie::Fp Fp;
+    template <class T>
+    class Fp2T;
+    typedef Fp2T<Fp> Fp2;
+    template <class T>
+    class Fp6T;
+    typedef Fp6T<Fp2> Fp6;
+    template <class T>
+    class Fp12T;
+    typedef Fp12T<Fp6> Fp12;
+}
+namespace libff
+{
 
-namespace libff {
-
-template<typename FieldT>
-void bn_batch_invert(std::vector<FieldT> &vec);
+    template <typename FieldT>
+    void bn_batch_invert(std::vector<FieldT> &vec);
 
 } // namespace libff
-
-#include <libff/algebra/curves/bn128/bn_utils.tcc>
 
 #endif // BN_UTILS_HPP_

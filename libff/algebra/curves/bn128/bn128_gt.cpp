@@ -5,6 +5,7 @@
  * @copyright  MIT license (see LICENSE file)
  *****************************************************************************/
 
+#include "depends/ate-pairing/include/bn.h"
 #include <libff/algebra/curves/bn128/bn128_gt.hpp>
 
 namespace libff {

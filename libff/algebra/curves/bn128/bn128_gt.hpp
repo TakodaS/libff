@@ -9,8 +9,8 @@
 #define BN128_GT_HPP_
 #include <iostream>
 
-#include "depends/ate-pairing/include/bn.h"
 
+#include <libff/algebra/curves/bn128/bn_utils.hpp>
 #include <libff/algebra/field_utils/field_utils.hpp>
 #include <libff/algebra/fields/prime_base/fp.hpp>
 

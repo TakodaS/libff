@@ -6,7 +6,7 @@
  *****************************************************************************/
 
 #include <libff/algebra/curves/bn128/bn128_g2.hpp>
-#include <libff/algebra/curves/bn128/bn_utils.hpp>
+#include <libff/algebra/curves/bn128/bn_utils.tcc>
 
 namespace libff {
 

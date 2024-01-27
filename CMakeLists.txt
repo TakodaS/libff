@@ -90,7 +90,7 @@ if(CMAKE_COMPILER_IS_GNUCXX OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   # Common compilation flags and warning configuration
   set(
     CMAKE_CXX_FLAGS
-    "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -Wfatal-errors"
+    "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -Wextra -Wfatal-errors"
   )
   if("${MULTICORE}")
       set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
@@ -229,7 +229,7 @@ if ("${IS_LIBFF_PARENT}")
      -E echo 'Built target finished'
   )
 
-  # add_subdirectory(depends)
+  add_subdirectory(depends)
   # Add a 'make clang-tidy' target that runs clang-tidy using checks specified in .clang-tidy
   include(clang-tidy.cmake)
 endif()

@@ -8,6 +8,7 @@
 #ifndef BN_UTILS_TCC_
 #define BN_UTILS_TCC_
 
+#include "depends/ate-pairing/include/bn.h"
 namespace libff {
 
 template<typename FieldT>

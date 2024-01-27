@@ -7,8 +7,8 @@
 
 #ifndef BN128_INIT_HPP_
 #define BN128_INIT_HPP_
-#include "depends/ate-pairing/include/bn.h"
 
+#include <libff/algebra/curves/bn128/bn_utils.hpp>
 #include <libff/algebra/curves/public_params.hpp>
 #include <libff/algebra/curves/bn128/bn128_fields.hpp>
 

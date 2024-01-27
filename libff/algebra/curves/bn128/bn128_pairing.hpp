@@ -10,8 +10,8 @@
 
 #ifndef BN128_PAIRING_HPP_
 #define BN128_PAIRING_HPP_
-#include "depends/ate-pairing/include/bn.h"
 
+#include <libff/algebra/curves/bn128/bn_utils.hpp>
 #include <libff/algebra/curves/bn128/bn128_g1.hpp>
 #include <libff/algebra/curves/bn128/bn128_g2.hpp>
 #include <libff/algebra/curves/bn128/bn128_gt.hpp>
