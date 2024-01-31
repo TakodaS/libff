@@ -6,6 +6,7 @@
  *****************************************************************************/
 
 #include <algorithm>
+#include <libff/algebra/curves/bn128/bn128_init.hpp>
 #include <libff/algebra/curves/bn128/bn128_g1.hpp>
 #include <libff/algebra/curves/bn128/bn_utils.tcc>
 #include "depends/ate-pairing/include/bn.h"
@@ -27,7 +28,7 @@ namespace libff
     bool bn128_G1::initialized = false;
     bigint<bn128_G1::h_limbs> bn128_G1::h;
 
-    void bn128_G1::fill_coord(std::array<bn::Fp,3> coord) const
+    void bn128_G1::fill_coord(std::array<bn::Fp, 3> coord) const
     {
         coord[0] = *X;
         coord[1] = *Y;
@@ -83,7 +84,23 @@ namespace libff
 
         return x;
     }
+    bn128_G1 &bn128_G1::operator=(bn128_G1 &&other)
+    {
+        if (X != other.X)
+        {
+            *X = std::move(*other.X);
+        }
+        if (Y != other.Y)
+        {
+            *Y = std::move(*other.Y);
+        }
+        if (Z != other.Z)
+        {
+            *Z = std::move(*other.Z);
+        }
 
+        return *this;
+    }
     bn128_G1::bn128_G1()
     {
         if (bn128_G1::initialized)
@@ -92,6 +109,18 @@ namespace libff
             this->Y = std::move(G1_zero.Y);
             this->Z = std::move(G1_zero.Z);
         }
+    }
+    bn128_G1::bn128_G1(const bn128_G1 &other)
+    {
+        this->X = std::make_unique<bn::Fp>(*other.X);
+        this->Y = std::make_unique<bn::Fp>(*other.Y);
+        this->Z = std::make_unique<bn::Fp>(*other.Z);
+    }
+    bn128_G1::bn128_G1(bn128_G1 &&other)
+    {
+        this->X = std::move(other.X);
+        this->Y = std::move(other.Y);
+        this->Z = std::move(other.Z);
     }
 
     bn128_G1::bn128_G1(std::array<bn::Fp, 3> coord)
@@ -129,9 +158,9 @@ namespace libff
 
     void bn128_G1::to_affine_coordinates()
     {
-            bn::Fp &X_ref=*X;
-            bn::Fp &Y_ref=*Y;
-            bn::Fp &Z_ref=*Z;
+        bn::Fp &X_ref = *X;
+        bn::Fp &Y_ref = *Y;
+        bn::Fp &Z_ref = *Z;
         if (this->is_zero())
         {
             X_ref = 0;
@@ -141,7 +170,7 @@ namespace libff
         else
         {
             bn::Fp r;
-            
+
             r = Z_ref;
             r.inverse();
             bn::Fp::square(*Z, r);
@@ -248,7 +277,7 @@ namespace libff
         this->add_cnt++;
 #endif
 
-        std::array<bn::Fp,3> this_coord, other_coord, result_coord;
+        std::array<bn::Fp, 3> this_coord, other_coord, result_coord;
         this->fill_coord(this_coord);
         other.fill_coord(other_coord);
         bn::ecop::ECAdd(result_coord.data(), this_coord.data(), other_coord.data());
@@ -350,7 +379,7 @@ namespace libff
         this->dbl_cnt++;
 #endif
 
-        std::array<bn::Fp,3> this_coord, result_coord;
+        std::array<bn::Fp, 3> this_coord, result_coord;
         this->fill_coord(this_coord);
         bn::ecop::ECDouble(result_coord.data(), this_coord.data());
 

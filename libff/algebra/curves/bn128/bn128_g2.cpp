@@ -81,6 +81,23 @@ namespace libff
         return x;
     }
 
+    bn128_G2 &bn128_G2::operator=(bn128_G2 &&other)
+    {
+        if (X != other.X)
+        {
+            *X = std::move(*other.X);
+        }
+        if (Y != other.Y)
+        {
+            *Y = std::move(*other.Y);
+        }
+        if (Z != other.Z)
+        {
+            *Z = std::move(*other.Z);
+        }
+
+        return *this;
+    }
     bn128_G2::bn128_G2()
     {
         if (bn128_G2::initialized)
@@ -89,6 +106,18 @@ namespace libff
             *this->Y = *G2_zero.Y;
             *this->Z = *G2_zero.Z;
         }
+    }
+    bn128_G2::bn128_G2(const bn128_G2 &other)
+    {
+        this->X = std::make_unique<bn::Fp2>(*other.X);
+        this->Y = std::make_unique<bn::Fp2>(*other.Y);
+        this->Z = std::make_unique<bn::Fp2>(*other.Z);
+    }
+    bn128_G2::bn128_G2(bn128_G2 &&other)
+    {
+        this->X = std::move(other.X);
+        this->Y = std::move(other.Y);
+        this->Z = std::move(other.Z);
     }
     bn128_G2::bn128_G2(std::array<bn::Fp2, 3> coord)
     {

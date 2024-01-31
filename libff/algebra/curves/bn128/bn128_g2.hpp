@@ -52,6 +52,7 @@ namespace libff
         bn128_G2();
         bn128_G2(const bn128_G2&);
         bn128_G2(std::array<bn::Fp2, 3> coord);
+        bn128_G2(bn128_G2 &&other);
 
         void print() const;
         void print_coordinates() const;

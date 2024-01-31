@@ -48,7 +48,7 @@ namespace libff
         bn128_G1();
         bn128_G1(const bn128_G1&);
         bn128_G1(std::array<bn::Fp, 3> coord);
-        bn128_G1(bn128_G1 &&other) = default;
+        bn128_G1(bn128_G1 &&other);
         
 
         void print() const;

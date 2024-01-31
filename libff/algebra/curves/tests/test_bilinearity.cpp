@@ -5,6 +5,7 @@
  * @copyright  MIT license (see LICENSE file)
  *****************************************************************************/
 #include <gtest/gtest.h>
+#include "depends/ate-pairing/include/bn.h"
 
 #include <libff/algebra/curves/edwards/edwards_pp.hpp>
 #include <libff/common/profiling.hpp>
