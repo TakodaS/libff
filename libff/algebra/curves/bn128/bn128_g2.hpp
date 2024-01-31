@@ -46,16 +46,12 @@ namespace libff
         static const mp_size_t h_limbs = (h_bitcount + GMP_NUMB_BITS - 1) / GMP_NUMB_BITS;
         static bigint<h_limbs> h;
 
-        bn::Fp2 X, Y, Z;
-        void fill_coord(bn::Fp2 coord[3]) const
-        {
-            coord[0] = this->X;
-            coord[1] = this->Y;
-            coord[2] = this->Z;
-        };
+        std::unique_ptr<bn::Fp2> X, Y, Z;
+        void fill_coord(std::array<bn::Fp2, 3> coord) const;
 
         bn128_G2();
-        bn128_G2(bn::Fp2 coord[3]) : X(coord[0]), Y(coord[1]), Z(coord[2]){};
+        bn128_G2(const bn128_G2&);
+        bn128_G2(std::array<bn::Fp2, 3> coord);
 
         void print() const;
         void print_coordinates() const;
@@ -68,6 +64,7 @@ namespace libff
 
         bool operator==(const bn128_G2 &other) const;
         bool operator!=(const bn128_G2 &other) const;
+        bn128_G2& operator=(bn128_G2&& other);
 
         bn128_G2 operator+(const bn128_G2 &other) const;
         bn128_G2 operator-() const;

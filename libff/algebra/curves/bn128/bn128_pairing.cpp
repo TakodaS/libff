@@ -16,21 +16,23 @@
 #include <libff/algebra/curves/bn128/bn128_init.hpp>
 #include <libff/algebra/curves/bn128/bn128_pairing.hpp>
 #include <libff/common/profiling.hpp>
+#include "depends/ate-pairing/include/bn.h"
 
 namespace libff {
 
 using std::size_t;
 
+bn128_ate_G1_precomp::~bn128_ate_G1_precomp(){};
 bool bn128_ate_G1_precomp::operator==(const bn128_ate_G1_precomp &other) const
 {
-    return (this->P[0] == other.P[0] &&
-            this->P[1] == other.P[1] &&
-            this->P[2] == other.P[2]);
+    return ((*this->P)[0] == (*other.P)[0] &&
+            (*this->P)[1] == (*other.P)[1] &&
+            (*this->P)[2] == (*other.P)[2]);
 }
 
 std::ostream& operator<<(std::ostream &out, const bn128_ate_G1_precomp &prec_P)
 {
-    for (auto p : prec_P.P)
+    for (auto p : *prec_P.P)
     {
 #ifndef BINARY_OUTPUT
         out << p << "\n";
@@ -43,7 +45,7 @@ std::ostream& operator<<(std::ostream &out, const bn128_ate_G1_precomp &prec_P)
 
 std::istream& operator>>(std::istream &in, bn128_ate_G1_precomp &prec_P)
 {
-    for (auto p : prec_P.P)
+    for (auto p : *prec_P.P)
     {
 #ifndef BINARY_OUTPUT
         in >> p;
@@ -57,9 +59,9 @@ std::istream& operator>>(std::istream &in, bn128_ate_G1_precomp &prec_P)
 
 bool bn128_ate_G2_precomp::operator==(const bn128_ate_G2_precomp &other) const
 {
-    if (!(this->Q[0] == other.Q[0] &&
-          this->Q[1] == other.Q[1] &&
-          this->Q[2] == other.Q[2] &&
+    if (!((*this->Q)[0] == (*other.Q)[0] &&
+          (*this->Q)[1] == (*other.Q)[1] &&
+          (*this->Q)[2] == (*other.Q)[2] &&
           this->coeffs.size() == other.coeffs.size()))
     {
         return false;
@@ -82,7 +84,7 @@ bool bn128_ate_G2_precomp::operator==(const bn128_ate_G2_precomp &other) const
 
 std::ostream& operator<<(std::ostream &out, const bn128_ate_G2_precomp &prec_Q)
 {
-    for (auto q : prec_Q.Q)
+    for (auto q : *prec_Q.Q)
     {
 #ifndef BINARY_OUTPUT
         out << q.a_ << "\n";
@@ -119,7 +121,7 @@ std::ostream& operator<<(std::ostream &out, const bn128_ate_G2_precomp &prec_Q)
 
 std::istream& operator>>(std::istream &in, bn128_ate_G2_precomp &prec_Q)
 {
-    for (auto q : prec_Q.Q)
+    for (auto q : *prec_Q.Q)
     {
 #ifndef BINARY_OUTPUT
         in >> q.a_;
@@ -168,22 +170,23 @@ bn128_ate_G1_precomp bn128_ate_precompute_G1(const bn128_G1& P)
     enter_block("Call to bn128_ate_precompute_G1");
 
     bn128_ate_G1_precomp result;
-    bn::Fp P_coord[3];
+    std::array<bn::Fp, 3> P_coord;
     P.fill_coord(P_coord);
-    bn::ecop::NormalizeJac(result.P, P_coord);
+    bn::ecop::NormalizeJac((*result.P).data(), P_coord.data());
 
     leave_block("Call to bn128_ate_precompute_G1");
     return result;
 }
 
+bn128_ate_G2_precomp::~bn128_ate_G2_precomp(){};
 bn128_ate_G2_precomp bn128_ate_precompute_G2(const bn128_G2& Q)
 {
     enter_block("Call to bn128_ate_precompute_G2");
 
     bn128_ate_G2_precomp result;
-    bn::Fp2 Q_coord[3];
+    std::array<bn::Fp2, 3> Q_coord;
     Q.fill_coord(Q_coord);
-    bn::components::precomputeG2(result.coeffs, result.Q, Q_coord);
+    bn::components::precomputeG2(result.coeffs, (*result.Q).data(), Q_coord.data());
 
     leave_block("Call to bn128_ate_precompute_G2");
     return result;
@@ -193,7 +196,7 @@ bn128_Fq12 bn128_ate_miller_loop(const bn128_ate_G1_precomp &prec_P,
                                  const bn128_ate_G2_precomp &prec_Q)
 {
     bn128_Fq12 f;
-    bn::components::millerLoop(f.elem, prec_Q.coeffs, prec_P.P);
+    bn::components::millerLoop(*f.elem, prec_Q.coeffs, (*prec_P.P).data());
     return f;
 }
 
@@ -203,7 +206,7 @@ bn128_Fq12 bn128_double_ate_miller_loop(const bn128_ate_G1_precomp &prec_P1,
                                         const bn128_ate_G2_precomp &prec_Q2)
 {
     bn128_Fq12 f;
-    bn::components::millerLoop2(f.elem, prec_Q1.coeffs, prec_P1.P, prec_Q2.coeffs, prec_P2.P);
+    bn::components::millerLoop2(*f.elem, prec_Q1.coeffs, (*prec_P1.P).data(), prec_Q2.coeffs, (*prec_P2.P).data());
     return f;
 }
 
@@ -211,7 +214,7 @@ bn128_GT bn128_final_exponentiation(const bn128_Fq12 &elt)
 {
     enter_block("Call to bn128_final_exponentiation");
     bn128_GT eltcopy = elt;
-    eltcopy.elem.final_exp();
+    eltcopy.elem->final_exp();
     leave_block("Call to bn128_final_exponentiation");
     return eltcopy;
 }

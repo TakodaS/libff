@@ -9,18 +9,9 @@
 #include <libff/algebra/curves/bn128/bn128_g2.hpp>
 #include <libff/algebra/curves/bn128/bn128_gt.hpp>
 #include <libff/algebra/curves/bn128/bn128_init.hpp>
+#include "depends/ate-pairing/include/bn.h"
 
 namespace libff {
-
-bn::Fp bn128_coeff_b;
-size_t bn128_Fq_s;
-bn::Fp bn128_Fq_nqr_to_t;
-mie::Vuint bn128_Fq_t_minus_1_over_2;
-
-bn::Fp2 bn128_twist_coeff_b;
-size_t bn128_Fq2_s;
-bn::Fp2 bn128_Fq2_nqr_to_t;
-mie::Vuint bn128_Fq2_t_minus_1_over_2;
 
 void init_bn128_params()
 {
@@ -40,13 +31,13 @@ void init_bn128_params()
     bn128_Fq2_t_minus_1_over_2 = mie::Vuint("14971724250519463826312126413021210649976634891596900701138993820439690427699319920245032869357433499099632259837909383182382988566862092145199781964621");
 
     /* choice of group G1 */
-    bn128_G1::G1_zero.X = bn::Fp(1);
-    bn128_G1::G1_zero.Y = bn::Fp(1);
-    bn128_G1::G1_zero.Z = bn::Fp(0);
+    *bn128_G1::G1_zero.X = bn::Fp(1);
+    *bn128_G1::G1_zero.Y = bn::Fp(1);
+    *bn128_G1::G1_zero.Z = bn::Fp(0);
 
-    bn128_G1::G1_one.X = bn::Fp(1);
-    bn128_G1::G1_one.Y = bn::Fp(2);
-    bn128_G1::G1_one.Z = bn::Fp(1);
+    *bn128_G1::G1_one.X = bn::Fp(1);
+    *bn128_G1::G1_one.Y = bn::Fp(2);
+    *bn128_G1::G1_one.Z = bn::Fp(1);
 
     bn128_G1::initialized = true;
 
@@ -106,15 +97,15 @@ void init_bn128_params()
     bn128_G1::fixed_base_exp_window_table.push_back(29482996);
 
     /* choice of group G2 */
-    bn128_G2::G2_zero.X = bn::Fp2(bn::Fp(1), bn::Fp(0));
-    bn128_G2::G2_zero.Y = bn::Fp2(bn::Fp(1), bn::Fp(0));
-    bn128_G2::G2_zero.Z = bn::Fp2(bn::Fp(0), bn::Fp(0));
+    *bn128_G2::G2_zero.X = bn::Fp2(bn::Fp(1), bn::Fp(0));
+    *bn128_G2::G2_zero.Y = bn::Fp2(bn::Fp(1), bn::Fp(0));
+    *bn128_G2::G2_zero.Z = bn::Fp2(bn::Fp(0), bn::Fp(0));
 
-    bn128_G2::G2_one.X = bn::Fp2(bn::Fp("15267802884793550383558706039165621050290089775961208824303765753922461897946"),
+    *bn128_G2::G2_one.X = bn::Fp2(bn::Fp("15267802884793550383558706039165621050290089775961208824303765753922461897946"),
                                         bn::Fp("9034493566019742339402378670461897774509967669562610788113215988055021632533"));
-    bn128_G2::G2_one.Y = bn::Fp2(bn::Fp("644888581738283025171396578091639672120333224302184904896215738366765861164"),
+    *bn128_G2::G2_one.Y = bn::Fp2(bn::Fp("644888581738283025171396578091639672120333224302184904896215738366765861164"),
                                         bn::Fp("20532875081203448695448744255224543661959516361327385779878476709582931298750"));
-    bn128_G2::G2_one.Z = bn::Fp2(bn::Fp(1), bn::Fp(0));
+    *bn128_G2::G2_one.Z = bn::Fp2(bn::Fp(1), bn::Fp(0));
 
     bn128_G2::initialized = true;
 
@@ -173,6 +164,6 @@ void init_bn128_params()
     // window 22 is unbeaten in [33055217.52, inf]
     bn128_G2::fixed_base_exp_window_table.push_back(33055218);
 
-    bn128_GT::GT_one.elem = bn::Fp12(1);
+    *bn128_GT::GT_one.elem = bn::Fp12(1);
 }
 } // namespace libff

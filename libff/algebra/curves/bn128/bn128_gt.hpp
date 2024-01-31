@@ -23,9 +23,11 @@ std::istream& operator>>(std::istream &, bn128_GT&);
 class bn128_GT {
 public:
     static bn128_GT GT_one;
-    bn::Fp12 elem;
+    std::unique_ptr<bn::Fp12> elem;
 
     bn128_GT();
+    ~bn128_GT();
+    bn128_GT(const bn128_GT &other);
     bool operator==(const bn128_GT &other) const;
     bool operator!=(const bn128_GT &other) const;
 
@@ -34,7 +36,7 @@ public:
 
     static bn128_GT one();
 
-    void print() { std::cout << this->elem << "\n"; };
+    void print(); 
 
     friend std::ostream& operator<<(std::ostream &out, const bn128_GT &g);
     friend std::istream& operator>>(std::istream &in, bn128_GT &g);

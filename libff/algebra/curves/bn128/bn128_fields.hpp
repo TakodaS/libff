@@ -7,7 +7,6 @@
 
 #ifndef BN128_FIELDS_HPP_
 #define BN128_FIELDS_HPP_
-#include "depends/ate-pairing/include/bn.h"
 #include <libff/algebra/fields/prime_base/fp.hpp>
 
 namespace libff {

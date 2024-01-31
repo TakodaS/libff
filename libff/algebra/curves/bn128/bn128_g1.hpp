@@ -8,14 +8,13 @@
 #ifndef BN128_G1_HPP_
 #define BN128_G1_HPP_
 #include <vector>
-
+#include <memory>
 #include <libff/algebra/curves/bn128/bn128_init.hpp>
 #include <libff/algebra/curves/curve_utils.hpp>
 #include <libff/algebra/curves/bn128/bn_utils.hpp>
 
 namespace libff
 {
-
     class bn128_G1;
     std::ostream &operator<<(std::ostream &, const bn128_G1 &);
     std::istream &operator>>(std::istream &, bn128_G1 &);
@@ -44,17 +43,13 @@ namespace libff
         static const mp_size_t h_limbs = (h_bitcount + GMP_NUMB_BITS - 1) / GMP_NUMB_BITS;
         static bigint<h_limbs> h;
 
-        bn::Fp X, Y, Z;
-        void fill_coord(bn::Fp coord[3]) const
-        {
-            coord[0] = this->X;
-            coord[1] = this->Y;
-            coord[2] = this->Z;
-            return;
-        };
-
+        std::unique_ptr<bn::Fp> X, Y, Z;
+        void fill_coord(std::array<bn::Fp,3> coord) const;
         bn128_G1();
-        bn128_G1(bn::Fp coord[3]) : X(coord[0]), Y(coord[1]), Z(coord[2]){};
+        bn128_G1(const bn128_G1&);
+        bn128_G1(std::array<bn::Fp, 3> coord);
+        bn128_G1(bn128_G1 &&other) = default;
+        
 
         void print() const;
         void print_coordinates() const;
@@ -71,6 +66,7 @@ namespace libff
         bn128_G1 operator+(const bn128_G1 &other) const;
         bn128_G1 operator-() const;
         bn128_G1 operator-(const bn128_G1 &other) const;
+        bn128_G1& operator=(bn128_G1&& other);
 
         bn128_G1 add(const bn128_G1 &other) const;
         bn128_G1 mixed_add(const bn128_G1 &other) const;

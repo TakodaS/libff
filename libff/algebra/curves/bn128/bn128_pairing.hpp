@@ -19,8 +19,11 @@
 namespace libff {
 
 struct bn128_ate_G1_precomp {
-    bn::Fp P[3];
+    std::unique_ptr<std::array<bn::Fp, 3>> P;
 
+    bn128_ate_G1_precomp();
+    bn128_ate_G1_precomp(const bn128_ate_G1_precomp &other);
+    ~bn128_ate_G1_precomp();
     bool operator==(const bn128_ate_G1_precomp &other) const;
     friend std::ostream& operator<<(std::ostream &out, const bn128_ate_G1_precomp &prec_P);
     friend std::istream& operator>>(std::istream &in, bn128_ate_G1_precomp &prec_P);
@@ -29,9 +32,12 @@ struct bn128_ate_G1_precomp {
 typedef bn::Fp6 bn128_ate_ell_coeffs;
 
 struct bn128_ate_G2_precomp {
-    bn::Fp2 Q[3];
+    std::unique_ptr<std::array<bn::Fp2, 3>> Q;
     std::vector<bn128_ate_ell_coeffs> coeffs;
 
+    bn128_ate_G2_precomp();
+    bn128_ate_G2_precomp(const bn128_ate_G2_precomp &other);
+    ~bn128_ate_G2_precomp();
     bool operator==(const bn128_ate_G2_precomp &other) const;
     friend std::ostream& operator<<(std::ostream &out, const bn128_ate_G2_precomp &prec_Q);
     friend std::istream& operator>>(std::istream &in, bn128_ate_G2_precomp &prec_Q);

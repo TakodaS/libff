@@ -8,11 +8,22 @@
 #ifndef BN_UTILS_HPP_
 #define BN_UTILS_HPP_
 #include <vector>
+#include <cstdint>
 
 namespace mie
 {
     class Fp;
-    // class Vuint;
+    namespace local
+    {
+        template <typename T, std::size_t S>
+        class FixedBuffer;
+    }
+
+    template <typename T>
+    class VuintT;
+
+    typedef VuintT<local::FixedBuffer<uint64_t, 576>> Vuint;
+
 }
 namespace bn
 {

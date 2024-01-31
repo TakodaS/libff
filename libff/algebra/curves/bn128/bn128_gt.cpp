@@ -13,8 +13,9 @@ namespace libff {
 bn128_GT bn128_GT::GT_one;
 bn128_GT::bn128_GT()
 {
-    this->elem.clear();
+    this->elem->clear();
 }
+bn128_GT::~bn128_GT(){};
 
 bool bn128_GT::operator==(const bn128_GT &other) const
 {
@@ -29,14 +30,14 @@ bool bn128_GT::operator!=(const bn128_GT& other) const
 bn128_GT bn128_GT::operator*(const bn128_GT &other) const
 {
     bn128_GT result;
-    bn::Fp12::mul(result.elem, this->elem, other.elem);
+    bn::Fp12::mul(*result.elem, *this->elem,*other.elem);
     return result;
 }
 
 bn128_GT bn128_GT::unitary_inverse() const
 {
     bn128_GT result(*this);
-    bn::Fp6::neg(result.elem.b_, result.elem.b_);
+    bn::Fp6::neg(result.elem->b_, result.elem->b_);
     return result;
 }
 
@@ -48,10 +49,10 @@ bn128_GT bn128_GT::one()
 std::ostream& operator<<(std::ostream &out, const bn128_GT &g)
 {
 #ifndef BINARY_OUTPUT
-    out << g.elem.a_ << OUTPUT_SEPARATOR << g.elem.b_;
+    out << g.elem->a_ << OUTPUT_SEPARATOR << g.elem->b_;
 #else
-    out.write((char*) &g.elem.a_, sizeof(g.elem.a_));
-    out.write((char*) &g.elem.b_, sizeof(g.elem.b_));
+    out.write((char*) &g.elem->a_, sizeof(g.elem->a_));
+    out.write((char*) &g.elem->b_, sizeof(g.elem->b_));
 #endif
     return out;
 }
@@ -59,13 +60,18 @@ std::ostream& operator<<(std::ostream &out, const bn128_GT &g)
 std::istream& operator>>(std::istream &in, bn128_GT &g)
 {
 #ifndef BINARY_OUTPUT
-    in >> g.elem.a_;
+    in >> g.elem->a_;
     consume_OUTPUT_SEPARATOR(in);
-    in >> g.elem.b_;
+    in >> g.elem->b_;
 #else
-    in.read((char*) &g.elem.a_, sizeof(g.elem.a_));
-    in.read((char*) &g.elem.b_, sizeof(g.elem.b_));
+    in.read((char*) &g.elem->a_, sizeof(g.elem->a_));
+    in.read((char*) &g.elem->b_, sizeof(g.elem->b_));
 #endif
     return in;
+}
+
+void bn128_GT::print()
+{
+ std::cout << *this->elem << "\n";
 }
 } // namespace libff
