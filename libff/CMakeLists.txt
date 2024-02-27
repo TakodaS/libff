@@ -113,18 +113,5 @@ if ("${IS_LIBFF_PARENT}")
   find_package(OpenSSL REQUIRED)
   INCLUDE_DIRECTORIES(${OPENSSL_INCLUDE_DIR})
 
-  add_executable(
-    multiexp_profile
-    EXCLUDE_FROM_ALL
-
-    algebra/scalar_multiplication/multiexp_profile.cpp
-  )
-  target_link_libraries(
-    multiexp_profile
-
-    ${OPENSSL_LIBRARIES}
-    ff
-  )
-
   add_dependencies(profile multiexp_profile)
 endif()
