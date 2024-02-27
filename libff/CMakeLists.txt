@@ -113,5 +113,4 @@ if ("${IS_LIBFF_PARENT}")
   find_package(OpenSSL REQUIRED)
   INCLUDE_DIRECTORIES(${OPENSSL_INCLUDE_DIR})
 
-  add_dependencies(profile multiexp_profile)
 endif()
