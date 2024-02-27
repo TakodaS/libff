@@ -165,6 +165,14 @@ std::istream& operator>>(std::istream &in, bn128_ate_G2_precomp &prec_Q)
     return in;
 }
 
+bn128_ate_G1_precomp::bn128_ate_G1_precomp()
+{
+    P = std::make_unique<std::array<bn::Fp, 3>>();
+    for (auto &element : *P) {
+        element = bn::Fp();
+    }
+}
+
 bn128_ate_G1_precomp bn128_ate_precompute_G1(const bn128_G1& P)
 {
     enter_block("Call to bn128_ate_precompute_G1");
@@ -178,6 +186,13 @@ bn128_ate_G1_precomp bn128_ate_precompute_G1(const bn128_G1& P)
     return result;
 }
 
+bn128_ate_G2_precomp::bn128_ate_G2_precomp()
+{
+    Q = std::make_unique<std::array<bn::Fp2, 3>>();
+    for (auto &element : *Q) {
+        element = bn::Fp2();
+    }
+}
 bn128_ate_G2_precomp::~bn128_ate_G2_precomp(){};
 bn128_ate_G2_precomp bn128_ate_precompute_G2(const bn128_G2& Q)
 {

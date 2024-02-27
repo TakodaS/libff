@@ -21,7 +21,7 @@ namespace libff {
 struct bn128_ate_G1_precomp {
     std::unique_ptr<std::array<bn::Fp, 3>> P;
 
-    bn128_ate_G1_precomp() = default;
+    bn128_ate_G1_precomp();
     bn128_ate_G1_precomp(const bn128_ate_G1_precomp &other);
     ~bn128_ate_G1_precomp();
     bool operator==(const bn128_ate_G1_precomp &other) const;
@@ -35,7 +35,7 @@ struct bn128_ate_G2_precomp {
     std::unique_ptr<std::array<bn::Fp2, 3>> Q;
     std::vector<bn128_ate_ell_coeffs> coeffs;
 
-    bn128_ate_G2_precomp() = default;
+    bn128_ate_G2_precomp();
     bn128_ate_G2_precomp(const bn128_ate_G2_precomp &other);
     ~bn128_ate_G2_precomp();
     bool operator==(const bn128_ate_G2_precomp &other) const;

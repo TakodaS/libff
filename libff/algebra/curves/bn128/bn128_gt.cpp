@@ -25,7 +25,7 @@ namespace libff
     }
     bn128_GT::bn128_GT()
     {
-        this->elem->clear();
+            this->elem = std::make_unique<bn::Fp12>();
     }
 
     bn128_GT::bn128_GT(const bn128_GT &other)

@@ -109,6 +109,12 @@ namespace libff
             this->Y = std::move(G1_zero.Y);
             this->Z = std::move(G1_zero.Z);
         }
+        else
+        {
+            X = std::make_unique<bn::Fp>();
+            Y = std::make_unique<bn::Fp>();
+            Z = std::make_unique<bn::Fp>();
+        }
     }
     bn128_G1::bn128_G1(const bn128_G1 &other)
     {
@@ -125,9 +131,9 @@ namespace libff
 
     bn128_G1::bn128_G1(std::array<bn::Fp, 3> coord)
     {
-        *this->X = coord[0];
-        *this->Y = coord[1];
-        *this->Z = coord[2];
+        this->X = std::make_unique<bn::Fp>(coord[0]);
+        this->Y = std::make_unique<bn::Fp>(coord[1]);
+        this->Z = std::make_unique<bn::Fp>(coord[2]);
     };
 
     void bn128_G1::print() const

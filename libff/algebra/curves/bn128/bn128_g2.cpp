@@ -122,9 +122,9 @@ namespace libff
     bn128_G2::bn128_G2(std::array<bn::Fp2, 3> coord)
     {
 
-        *this->X = coord[0];
-        *this->Y = coord[1];
-        *this->Z = coord[2];
+        this->X = std::make_unique<bn::Fp2>(coord[0]);
+        this->Y = std::make_unique<bn::Fp2>(coord[1]);
+        this->Z = std::make_unique<bn::Fp2>(coord[2]);
     }
 
     void bn128_G2::print() const
