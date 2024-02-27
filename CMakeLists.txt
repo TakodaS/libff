@@ -6,13 +6,6 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   set(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING "Build type on single-configuration generators" FORCE)
 endif()
 
-set(
-  CURVE
-  "BN128"
-  CACHE
-  STRING
-  "Default curve: one of BLS12_381, ALT_BN128, BN128, EDWARDS, MNT4, MNT6"
-)
 
 option(
   DEBUG
@@ -35,11 +28,6 @@ option(
   ON
 )
 option(
-  MONTGOMERY_OUTPUT
-  "Use Montgomery representations for serialization and words representation of Fp elements (faster but not human-readable)"
-  ON
-)
-option(
   USE_PT_COMPRESSION
   "Use point compression"
   ON
@@ -47,11 +35,6 @@ option(
 option(
   PROFILE_OP_COUNTS
   "Collect counts for field and curve operations"
-  OFF
-)
-option(
-  USE_MIXED_ADDITION
-  "Convert each element of the key pair to affine coordinates"
   OFF
 )
 
@@ -135,12 +118,6 @@ add_definitions(
 
 enable_testing()
 
-if(${CURVE} STREQUAL "BN128")
-  include_directories(depends)
-  add_definitions(
-    -DBN_SUPPORT_SNARK=1
-  )
-endif()
 
 if("${DEBUG}")
   add_definitions(-DDEBUG=1)
